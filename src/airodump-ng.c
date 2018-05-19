@@ -1588,6 +1588,7 @@ int dump_add_packet( unsigned char *h80211, int caplen, struct rx_info *ri, int 
 		}
 
 	st_cur->nb_pkt = 0;
+	st_cur->cap_len = 0;
 
         st_cur->prev = st_prv;
 
@@ -1654,6 +1655,7 @@ int dump_add_packet( unsigned char *h80211, int caplen, struct rx_info *ri, int 
     }
 
     st_cur->nb_pkt++;
+	st_cur->cap_len += caplen;
 
 skip_station:
 
@@ -3778,7 +3780,7 @@ void dump_print( int ws_row, int ws_col, int if_num )
 
     if(G.show_sta) {
 	memcpy( strbuf, " BSSID              STATION "
-		"           PWR   Rate    Lost    Frames  Probes", columns_sta );
+		"           PWR   Rate    Lost    Frames  CapSize Probes", columns_sta );
 	strbuf[ws_col - 1] = '\0';
 	fprintf( stderr, "%s\n", strbuf );
 
@@ -3870,6 +3872,7 @@ void dump_print( int ws_row, int ws_col, int if_num )
 		fprintf( stderr,  "%c", (st_cur->qos_to_ds) ? 'e' : ' ');
 		fprintf( stderr, "  %4d", st_cur->missed   );
 		fprintf( stderr, " %8lu", st_cur->nb_pkt   );
+		fprintf( stderr, " %8lu", st_cur->cap_len   );
 
 		if( ws_col > (columns_sta - 6) )
 		{
@@ -4173,7 +4176,7 @@ int dump_write_csv( void )
 
     fprintf( G.f_txt,
         "\r\nStation MAC, First time seen, Last time seen, "
-        "Power, # packets, BSSID, Probed ESSIDs\r\n" );
+        "Power, # packets, # bytes cap, BSSID, Probed ESSIDs\r\n" );
 
     st_cur = G.st_1st;
 
@@ -4206,7 +4209,7 @@ int dump_write_csv( void )
                  ltime->tm_mday, ltime->tm_hour,
                  ltime->tm_min,  ltime->tm_sec );
 
-        fprintf( G.f_txt, "%3d, %8lu, ",
+        fprintf( G.f_txt, "%3d, %8lu, %8lu, ",
                  st_cur->power,
                  st_cur->nb_pkt );
 

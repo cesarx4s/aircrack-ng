@@ -339,7 +339,7 @@ struct ST_info
     struct ST_info *next;    /* the next client in list   */
     struct AP_info *base;    /* AP this client belongs to */
     time_t tinit, tlast;     /* first and last time seen  */
-    unsigned long nb_pkt;    /* total number of packets   */
+    long unsigned int nb_pkt;    /* total number of packets   */
     unsigned char stmac[6];  /* the client's MAC address  */
     char *manuf;             /* the client's manufacturer */
     int probe_index;         /* probed ESSIDs ring index  */
@@ -356,7 +356,8 @@ struct ST_info
     int qos_to_ds;           /* does it use 802.11e to ds */
     int qos_fr_ds;           /* does it receive 802.11e   */
     int channel;             /* Channel station is seen   */
-                             /*  Not used yet		  */
+    long unsigned int cap_len;		     /* Total Bytes captured for this Station*/
+                             /* Not used yet		  */
 };
 
 /* linked list of detected macs through ack, cts or rts frames */
