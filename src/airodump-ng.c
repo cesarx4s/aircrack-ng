@@ -4211,7 +4211,7 @@ int dump_write_csv( void )
 
         fprintf( G.f_txt, "%3d, %8lu, %8lu, ",
                  st_cur->power,
-                 st_cur->nb_pkt );
+                 st_cur->nb_pkt, st_cur->cap_len);
 
         if( ! memcmp( ap_cur->bssid, BROADCAST, 6 ) )
             fprintf( G.f_txt, "(not associated) ," );
